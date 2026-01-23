@@ -119,3 +119,5 @@ Cloud‑deployed, scalable architecture
 
 🌍 Impact
 RuralEdu enables continuous learning without connectivity barriers, making digital education accessible to rural and under‑resourced schools.
+
+
