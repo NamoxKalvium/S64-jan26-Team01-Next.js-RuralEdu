@@ -53,6 +53,7 @@ Versioned Containers:
 Each deployment uses a specific Docker image version, making rollbacks easier.
 
 Case Study: The Never‑Ending Deployment Loop
+
 What Is Going Wrong?
 In the QuickServe example, deployments fail due to poor handoff between deployment stages.
 
