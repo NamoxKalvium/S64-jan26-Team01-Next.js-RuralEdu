@@ -35,11 +35,4 @@ Saanvi - 2.11
 
 Namo - 2.12
 
-## Saturday 24th jan
-Glory - 2.16
-
-Saanvi - 2.14
-
-Namo - (2.15)
-
 ### Week 2
