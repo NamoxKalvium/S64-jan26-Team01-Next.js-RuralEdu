@@ -113,17 +113,30 @@ Dynamic	         ❌	      ✅	         ❌
 Hybrid	         ✅	      ⚠️	      ✅
 The key is choosing the right strategy per page, not one strategy for the entire app.
 
-Case Study: “The News Portal That Felt Outdated”
-Problem Analysis
+C🧩 Case Study: “The News Portal That Felt Outdated”
+The Issue
+
 In the DailyEdge example:
 
-Static homepage → fast but outdated breaking news
+A fully static homepage was fast but failed to show breaking news
 
-Full SSR → fresh data but slow and expensive
+Switching entirely to SSR fixed freshness but caused performance and cost issues
 
-Root Issue
-The team used one rendering strategy for all content, ignoring different data needs.
+Core Problem
 
+A single rendering strategy was used for all content, despite different data requirements.
+
+A Balanced Next.js Solution
+
+Using the App Router, a better structure would be:
+
+Homepage → Static with revalidation (revalidate: 60)
+
+Breaking news section → Dynamic rendering
+
+Article pages → Fully static
+
+This delivers both speed and freshness where they matter most.
 Balanced Solution Using Next.js App Router
 A better approach would be:
 
