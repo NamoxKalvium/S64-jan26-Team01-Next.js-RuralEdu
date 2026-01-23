@@ -57,12 +57,13 @@ Case Study: The Never‑Ending Deployment Loop
 What Is Going Wrong?
 In the QuickServe example, deployments fail due to poor handoff between deployment stages.
 
-Issue 1: Environment Variable Not Found
-Cause:
-Variables are present locally but missing in CI/CD or cloud.
+Issue 1: Missing Environment Variables
 
-Fix:
-Store all secrets in GitHub Actions and inject them during deployment.
+Cause:
+Environment variables work correctly in local setup but are not configured in the CI/CD pipeline or cloud environment.
+
+Resolution:
+All sensitive variables are securely stored in GitHub Actions and passed to the application during the deployment process.
 
 Issue 2: Port Already in Use
 Cause:
