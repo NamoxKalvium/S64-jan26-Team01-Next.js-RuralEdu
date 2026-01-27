@@ -5,7 +5,7 @@ Docker and CI/CD make deployment easier by automating and standardizing the proc
 ## Docker
 Docker helps us package our full‑stack application along with all its dependencies into a container. This ensures the app runs the same way on every system.
 
-In our project (RuralEdu):
+## In our project (RuralEdu):
 
 We used a Dockerfile to containerize our Next.js application
 
@@ -13,7 +13,7 @@ PostgreSQL and Redis run as separate containers
 
 Docker Compose helped us run all services together
 
-Why this helps:
+## Why this helps:
 
 No environment mismatch issues
 
@@ -21,10 +21,12 @@ Easy to deploy on AWS/Azure
 
 Faster setup and rollback
 
-CI/CD Pipelines
+CI/CD Pipelines:
+
 CI/CD automates the process of building, testing, and deploying code whenever changes are pushed to GitHub.
 
-In RuralEdu:
+**In RuralEdu:**
+
 
 GitHub Actions triggers on every push to the main branch
 
@@ -32,7 +34,7 @@ It builds the Docker image and deploys it
 
 This reduces manual deployment errors
 
-Benefits:
+# Benefits:
 
 Faster and reliable deployments
 
@@ -44,9 +46,11 @@ Secure Deployment Considerations (AWS / Azure)
 When deploying a full‑stack application securely, we considered:
 
 Environment Variables:
+
 Sensitive data like database URLs and secrets are stored in GitHub Secrets and cloud environment variables, not in code.
 
 Port Management:
+
 Only required ports are exposed; databases are kept private.
 
 Versioned Containers:
@@ -109,3 +113,5 @@ Add automated tests
 Use staging environments
 
 Use managed cloud services
+
+This will help us build our project seamlessly 
