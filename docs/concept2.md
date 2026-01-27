@@ -1,9 +1,9 @@
- Environment‑Aware Builds & Secure Secrets Management
+## Environment‑Aware Builds & Secure Secrets Management
 Modern applications are deployed across multiple environments such as development, staging, and production. Proper environment segregation and secure secrets management are essential to ensure safety, reliability, and smooth CI/CD workflows.
 
 In our project RuralEdu, we followed environment‑aware deployment practices to avoid configuration mistakes and protect sensitive data.
 
-1. Why Environment Segregation Is Important
+**1. Why Environment Segregation Is Important**
 What Is Environment Segregation?
 Environment segregation means maintaining separate configurations for:
 
@@ -17,7 +17,7 @@ Each environment has its own:
 
 Database
 
-API keys
+# API keys
 
 Environment variables
 
