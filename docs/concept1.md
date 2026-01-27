@@ -63,7 +63,7 @@ Why?
 
 Dashboards show user‑specific and frequently changing data
 
-Progress and sync status must always be up‑to‑date
+Progress and sync status must always be up‑to‑date....
 
 3. Hybrid Rendering (Static + Revalidation)
 What It Is
