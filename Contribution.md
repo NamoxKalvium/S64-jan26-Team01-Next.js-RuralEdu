@@ -48,27 +48,27 @@ Namo- 2.25
 
 ### Week 3
 
-## Monday 1st feb
+## Monday 2nd feb
 Glory- 2.28
 Saanvi- 2.27
 Namo- 2.26
 
-## Tuesday 2nd feb
+## Tuesday 3rd feb
 Glory- 2.31
 Saanvi- 2.30
 Namo- 2.29
 
-## Wednesday 3rd feb
+## Wednesday 4th feb
 Glory- 2.34
 Saanvi- 2.33
 Namo- 2.32
 
-## Thursday 4th feb
+## Thursday 5th feb
 Glory- 2.37
 Saanvi- 2.36
 Namo- 2.35
 
-## Friday 5th feb
+## Friday 6th feb
 Glory- 2.40
 Saanvi- 2.39
 Namo- 2.38
