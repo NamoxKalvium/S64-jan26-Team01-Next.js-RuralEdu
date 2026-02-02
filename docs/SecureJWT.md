@@ -237,29 +237,7 @@ Can extend roles & permissions easily
 
 Supports multi-device login with token tracking
 
-✅ Deliverables Checklist
- Access token (short-lived)
 
- Refresh token (long-lived)
-
- Secure cookie storage
-
- Automatic refresh flow
-
- Refresh token rotation
-
- Protected API routes
-
- Security reflection & documentation
-
-📚 References
-JWT.io – JSON Web Tokens
-
-OWASP Authentication Best Practices
-
-Next.js Route Handlers Documentation
-
-MDN: HTTP Cookies & Security
 
 
 
