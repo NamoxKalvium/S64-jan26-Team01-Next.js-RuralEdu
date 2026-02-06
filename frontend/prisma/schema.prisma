@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 // Prisma Schema for RuralEdu
+=======
+>>>>>>> e8e326fe3f272ef5a2b6bea1c38ef698a8762c2a
 generator client {
   provider = "prisma-client-js"
 }
@@ -9,6 +12,7 @@ datasource db {
 }
 
 model User {
+<<<<<<< HEAD
   id        String   @id @default(cuid())
   name      String
   email     String   @unique
@@ -18,4 +22,14 @@ model User {
   updatedAt DateTime @updatedAt
 
   @@index([email])
+=======
+  id          String   @id @default(uuid())
+  email       String   @unique
+  fullName    String?
+  password    String
+  role        String   // "LEARNER", "TEACHER", "PARENT"
+  dateOfBirth DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+>>>>>>> e8e326fe3f272ef5a2b6bea1c38ef698a8762c2a
 }
