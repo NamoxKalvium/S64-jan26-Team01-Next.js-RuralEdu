@@ -17,13 +17,19 @@ export const metadata: Metadata = {
   title: "RuralEdu - Offline Learning Platform",
   description: "Offline-first educational platform for rural schools",
   manifest: "/manifest.json",
-  themeColor: "#18659e",
-  viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
     title: "RuralEdu",
   },
+};
+
+export const viewport = {
+  themeColor: "#18659e",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function RootLayout({
