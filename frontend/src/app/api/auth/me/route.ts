@@ -8,7 +8,7 @@ import { prisma } from "@/lib/prisma";
  */
 export async function GET(req: NextRequest) {
   try {
-    const payload = verifyToken(req);
+    const payload = await verifyToken(req);
 
     if (!payload) {
       return NextResponse.json(
@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
       where: { id: payload.id },
       select: {
         id: true,
-        name: true,
+        fullName: true,
         email: true,
         role: true,
         createdAt: true,

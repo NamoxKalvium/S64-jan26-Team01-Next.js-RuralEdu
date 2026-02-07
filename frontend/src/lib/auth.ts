@@ -1,43 +1,3 @@
-<<<<<<< HEAD
-import jwt from "jsonwebtoken";
-import { NextRequest } from "next/server";
-
-const JWT_SECRET = process.env.JWT_SECRET || "ruraledu-secret-key-change-in-production";
-
-export interface JWTPayload {
-  id: string;
-  email: string;
-  role: string;
-}
-
-/**
- * Verify JWT token from request headers
- */
-export function verifyToken(req: NextRequest): JWTPayload | null {
-  try {
-    const authHeader = req.headers.get("authorization");
-    
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return null;
-    }
-
-    const token = authHeader.substring(7); // Remove "Bearer " prefix
-    
-    const decoded = jwt.verify(token, JWT_SECRET) as JWTPayload;
-    return decoded;
-  } catch (error) {
-    return null;
-  }
-}
-
-/**
- * Generate JWT token
- */
-export function generateToken(payload: JWTPayload): string {
-  return jwt.sign(payload, JWT_SECRET, {
-    expiresIn: "7d",
-  });
-=======
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
@@ -95,5 +55,19 @@ export async function updateSession(request: NextRequest) {
         expires: parsed.expires,
     });
     return res;
->>>>>>> e8e326fe3f272ef5a2b6bea1c38ef698a8762c2a
+}
+
+export async function verifyToken(request: NextRequest): Promise<any | null> {
+    const session = request.cookies.get("session")?.value;
+    if (!session) return null;
+    
+    try {
+        const payload = await decrypt(session);
+        if (payload && payload.user) {
+            return payload.user;
+        }
+        return null;
+    } catch (error) {
+        return null;
+    }
 }

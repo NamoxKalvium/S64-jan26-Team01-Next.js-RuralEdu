@@ -49,6 +49,11 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // Skip caching for API calls and Next.js RSC requests to prevent errors
+  if (url.pathname.startsWith('/api/') || url.searchParams.has('_rsc')) {
+    return;
+  }
+
   event.respondWith(
     caches.match(request).then((cachedResponse) => {
       // Return cached version if available

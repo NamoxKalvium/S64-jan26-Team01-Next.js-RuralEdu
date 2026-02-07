@@ -1,4 +1,4 @@
-import Image from "next/image";
+ 
 
 export default function Home() {
   return (
@@ -49,16 +49,13 @@ export default function Home() {
             </svg>
             {/* The Pentagonal student image */}
             <div className="relative z-10">
-              <Image
+              <img
                 src="/hero_image.png"
+                alt="Student"
                 width={320}
                 height={320}
-                alt="Student"
                 className="shadow-xl border-2 border-white"
-                style={{
-                  clipPath: "polygon(49% 3%, 95% 28%, 77% 93%, 20% 93%, 2% 28%)"
-                }}
-                priority
+                style={{ clipPath: "polygon(49% 3%, 95% 28%, 77% 93%, 20% 93%, 2% 28%)" }}
               />
             </div>
             {/* Green squiggle accent */}
