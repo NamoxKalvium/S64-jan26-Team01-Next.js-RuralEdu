@@ -1,11 +1,11 @@
 // Service Worker for RuralEdu - Offline First
-const CACHE_NAME = 'ruraledu-v1';
-const RUNTIME_CACHE = 'ruraledu-runtime-v1';
+// NOTE: In development we want fresh HTML, so we use a NETWORK-FIRST
+// strategy for navigation requests to avoid stale landing pages.
+const CACHE_NAME = 'ruraledu-v2';
+const RUNTIME_CACHE = 'ruraledu-runtime-v2';
 
 // Assets to cache immediately
 const STATIC_ASSETS = [
-  '/',
-  '/home',
   '/offline',
   '/manifest.json',
 ];
@@ -34,7 +34,7 @@ self.addEventListener('activate', (event) => {
   return self.clients.claim();
 });
 
-// Fetch event - Network first, fallback to cache
+// Fetch event
 self.addEventListener('fetch', (event) => {
   const { request } = event;
   const url = new URL(request.url);
@@ -49,17 +49,36 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
+  // Network-first for navigation requests (HTML pages)
+  if (request.mode === 'navigate') {
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          const copy = response.clone();
+          caches.open(RUNTIME_CACHE).then((cache) => {
+            cache.put(request, copy);
+          });
+          return response;
+        })
+        .catch(async () => {
+          const cached = await caches.match(request);
+          if (cached) return cached;
+          const offline = await caches.match('/offline');
+          return offline || new Response('Offline', { status: 503 });
+        })
+    );
+    return;
+  }
+
+  // For other GET requests: cache-first with network fallback
   event.respondWith(
     caches.match(request).then((cachedResponse) => {
-      // Return cached version if available
       if (cachedResponse) {
         return cachedResponse;
       }
 
-      // Try network, fallback to cache or offline page
       return fetch(request)
         .then((response) => {
-          // Cache successful responses
           if (response && response.status === 200) {
             const responseToCache = response.clone();
             caches.open(RUNTIME_CACHE).then((cache) => {
@@ -68,14 +87,7 @@ self.addEventListener('fetch', (event) => {
           }
           return response;
         })
-        .catch(() => {
-          // If it's a navigation request, show offline page
-          if (request.mode === 'navigate') {
-            return caches.match('/offline');
-          }
-          // For other requests, return cached version or empty response
-          return cachedResponse || new Response('Offline', { status: 503 });
-        });
+        .catch(() => new Response('Offline', { status: 503 }));
     })
   );
 });
