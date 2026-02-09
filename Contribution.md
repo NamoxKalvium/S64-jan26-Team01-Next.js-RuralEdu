@@ -72,3 +72,26 @@ Namo- 2.35
 Glory- 2.40
 Saanvi- 2.39
 Namo- 2.38
+
+
+### Week 4
+
+## Monday 9th feb
+Glory- 2.43
+Saanvi- 2.42
+Namo- 2.41
+
+## Tuesday 10th feb
+Glory- 2.46
+Saanvi- 2.45
+Namo- 2.44
+
+## Wednesday 11th feb
+Glory- 2.49
+Saanvi- 2.48
+Namo- 2.47
+
+## Thursday 12th feb
+Saanvi/Glory - 2.51
+Namo- 2.50
+
