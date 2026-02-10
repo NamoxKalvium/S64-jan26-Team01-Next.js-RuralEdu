@@ -1,0 +1,317 @@
+This task implements a Continuous Integration (CI) Pipeline for a Next.js project using GitHub Actions.
+The goal is to ensure that every push or pull request automatically verifies the codebase by running:
+
+✅ Linting (ESLint)
+✅ Unit Tests (Jest with coverage)
+✅ Build Verification (Next.js build)
+✅ Optional Deployment (only on main branch)
+
+This ensures code quality, prevents broken builds, and improves team collaboration.
+
+🎯 Objectives
+By completing this task, I achieved:
+
+Automated CI checks on every push and pull request.
+
+Prevented bad code from being merged into main.
+
+Improved reliability through lint + test + build checks.
+
+Added caching and concurrency for faster pipelines.
+
+Enabled secure deployment support using GitHub Secrets.
+
+🏗️ Workflow File Setup
+📂 Directory Structure
+The workflow is created inside:
+
+.github/
+ └── workflows/
+      └── ci.yml
+⚙️ GitHub Actions Workflow File (ci.yml)
+📌 File: .github/workflows/ci.yml
+
+name: CI Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+
+  pull_request:
+    branches: [main, develop]
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: "npm"
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Linter
+        run: npm run lint
+
+      - name: Run Unit Tests
+        run: npm test -- --coverage
+
+      - name: Build Application
+        run: npm run build
+
+      - name: Deploy Application
+        if: github.ref == 'refs/heads/main'
+        run: echo "Deploying application..."
+🧩 Workflow Explanation (Step-by-Step)
+✅ Step 1: Workflow Trigger
+The workflow triggers automatically when:
+
+Code is pushed to main or develop
+
+A pull request is created targeting main or develop
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+This ensures that both development and production branches are protected.
+
+✅ Step 2: Concurrency Optimization
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+This ensures:
+
+Only one workflow runs per branch at a time.
+
+If another commit is pushed, the old pipeline cancels automatically.
+
+📌 Benefit: Saves CI minutes and avoids duplicate builds.
+
+✅ Step 3: Checkout Code
+- name: Checkout Repository
+  uses: actions/checkout@v3
+This downloads the latest repository code into the GitHub runner.
+
+✅ Step 4: Node.js Setup + Caching
+- name: Set up Node.js
+  uses: actions/setup-node@v3
+  with:
+    node-version: 18
+    cache: "npm"
+This ensures:
+
+Node.js version is consistent (Node 18)
+
+Dependencies are cached → faster builds
+
+✅ Step 5: Install Dependencies
+- name: Install Dependencies
+  run: npm ci
+We use npm ci instead of npm install because:
+
+Faster
+
+Uses exact versions from package-lock.json
+
+More reliable for CI environments
+
+✅ Step 6: Run ESLint
+- name: Run Linter
+  run: npm run lint
+This checks for:
+
+Syntax issues
+
+Unused imports
+
+Bad formatting
+
+Code style problems
+
+✅ Step 7: Run Unit Tests with Coverage
+- name: Run Unit Tests
+  run: npm test -- --coverage
+This ensures:
+
+Unit tests pass
+
+Coverage report is generated
+
+Code changes don’t break features
+
+✅ Step 8: Build Next.js Project
+- name: Build Application
+  run: npm run build
+This verifies the app can successfully compile.
+
+📌 This prevents merging code that breaks production builds.
+
+✅ Step 9: Deployment Step (Optional)
+- name: Deploy Application
+  if: github.ref == 'refs/heads/main'
+  run: echo "Deploying application..."
+This deployment runs only when code is pushed to main.
+
+In real-world deployment, this can be replaced with:
+
+AWS ECS Deploy
+
+Vercel Deployment
+
+Azure Web App Deployment
+
+Netlify Deployment
+
+📦 Required Scripts in package.json
+To ensure CI works properly, these scripts were added/verified:
+
+📌 File: package.json
+
+"scripts": {
+  "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+  "test": "jest",
+  "build": "next build"
+}
+🔐 GitHub Secrets Setup (Secure Deployments)
+To prevent exposing credentials publicly, deployment secrets are stored in GitHub Actions Secrets.
+
+Steps to Add Secrets
+Go to GitHub Repository
+
+Click Settings
+
+Click Secrets and Variables
+
+Click Actions
+
+Click New Repository Secret
+
+Add keys like:
+
+AWS_ACCESS_KEY_ID
+
+AWS_SECRET_ACCESS_KEY
+
+AZURE_WEBAPP_PUBLISH_PROFILE
+
+Example Usage in Workflow
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+📌 Benefit: Secrets remain private and never appear in the repo.
+
+📸 Workflow Verification
+To validate CI pipeline:
+
+Steps Followed
+Created .github/workflows/ci.yml
+
+Pushed code to GitHub
+
+Opened the Actions tab
+
+Verified all steps executed in order:
+
+✅ Install Dependencies
+✅ Lint
+✅ Tests
+✅ Build
+✅ Deploy (only on main)
+
+🧪 Evidence / Screenshots Required
+The following screenshots should be included in submission:
+
+Workflow YAML file in GitHub
+
+GitHub Actions successful run summary
+
+Logs showing lint/test/build output
+
+Test coverage logs
+
+📌 Location: GitHub → Actions tab → Click the workflow run
+
+📊 CI Pipeline Flow Diagram
+Push / Pull Request
+        |
+        v
+Checkout Repository
+        |
+        v
+Setup Node.js + Cache Dependencies
+        |
+        v
+Install Dependencies (npm ci)
+        |
+        v
+Run ESLint (npm run lint)
+        |
+        v
+Run Tests + Coverage (npm test -- --coverage)
+        |
+        v
+Build Next.js App (npm run build)
+        |
+        v
+Deploy (only if branch = main)
+💡 Reflection
+✅ Why CI is Important
+CI improves software quality by ensuring:
+
+Every commit is tested before merging.
+
+Broken code is detected early.
+
+Teams collaborate without fear of breaking production.
+
+Deployment becomes safe and repeatable.
+
+⚡ How Caching Improved Performance
+Using:
+
+cache: "npm"
+reduced pipeline runtime significantly because dependencies are not downloaded repeatedly.
+
+This is especially useful when projects grow larger.
+
+🔁 How Concurrency Helps
+Concurrency prevents wasted builds:
+
+If multiple commits are pushed quickly,
+
+Only the latest commit runs fully,
+
+Previous builds are canceled.
+
+This reduces unnecessary workload and saves time.
+
+🔐 Why Secrets are Critical
+Hardcoding credentials in YAML is dangerous because:
+
+Anyone can view the repository workflow
+
+Secrets can be stolen
+
+Cloud services may get compromised
+
+Using GitHub Secrets ensures credentials remain protected.
+
+📌 Conclusion
+This CI pipeline ensures the Next.js application is always tested, linted, and build-ready before merging.
+It improves productivity, reliability, and makes the project ready for production deployment.
+
+
+
