@@ -1,0 +1,390 @@
+This task focuses on making the backend APIs and overall system structure easy to understand, maintain, and extend.
+
+By completing this task, we achieved:
+
+✅ Complete API Documentation (Swagger UI / Postman Collection)
+✅ Centralized versioning + metadata for documentation
+✅ System Architecture Documentation (ARCHITECTURE.md)
+✅ Clear explanation of data flow, deployment, and folder structure
+✅ Documentation links added to the main README
+✅ Reflection on documentation maintenance & onboarding
+
+🧰 Tech Stack Used
+Layer	Technology
+Frontend	Next.js (App Router)
+Backend	Next.js API Routes (/app/api)
+Database	PostgreSQL
+ORM	Prisma
+Authentication	JWT
+Documentation	Postman Collection (or Swagger)
+Deployment	AWS / Azure
+CI/CD	GitHub Actions
+📑 1. API Documentation
+For documenting our API endpoints, we used:
+
+✅ Option B: Postman Collection (Recommended for Next.js API routes)
+Postman was selected because it is easy to maintain, supports authentication testing, and allows exporting/importing documentation.
+
+📂 API Documentation Location
+📌 Stored inside the repository at:
+
+docs/postman_collection.json
+📌 API Metadata
+Field	Value
+API Version	v1.0.0
+Base URL	http://localhost:3000
+Production URL	https://your-domain.com
+Authentication	Bearer Token (JWT)
+Last Updated	2026-02-11
+🔐 Authentication Method
+Our APIs use JWT Authentication.
+
+Authorization Header Format
+Authorization: Bearer <JWT_TOKEN>
+🧪 API Endpoints Included
+Below is the list of endpoints documented inside Postman.
+
+🟢 Auth APIs
+✅ Signup User
+POST /api/auth/signup
+
+Request Body
+{
+  "name": "Alice",
+  "email": "alice@example.com",
+  "password": "mypassword"
+}
+Success Response (201)
+{
+  "success": true,
+  "message": "Signup successful",
+  "data": {
+    "id": 1,
+    "name": "Alice",
+    "email": "alice@example.com"
+  }
+}
+Failure Response (400)
+{
+  "success": false,
+  "message": "User already exists"
+}
+✅ Login User
+POST /api/auth/login
+
+Request Body
+{
+  "email": "alice@example.com",
+  "password": "mypassword"
+}
+Success Response (200)
+{
+  "success": true,
+  "message": "Login successful",
+  "token": "<JWT_TOKEN>"
+}
+Failure Response (401)
+{
+  "success": false,
+  "message": "Invalid credentials"
+}
+🔵 Protected APIs
+✅ Get Current User Info
+GET /api/users
+
+Headers
+Authorization: Bearer <JWT_TOKEN>
+Success Response (200)
+{
+  "success": true,
+  "message": "Protected data",
+  "user": {
+    "id": 1,
+    "email": "alice@example.com"
+  }
+}
+Failure Response (403)
+{
+  "success": false,
+  "message": "Invalid or expired token"
+}
+📦 How to Use Postman Collection
+Step 1: Import Collection
+Open Postman
+
+Click Import
+
+Select:
+
+docs/postman_collection.json
+Step 2: Setup Environment
+Create an environment in Postman with:
+
+Variable	Value
+base_url	
+token	<paste JWT after login>
+📌 Postman Documentation Proof
+📸 Screenshots to include in submission
+
+Collection overview
+
+Signup API tested successfully
+
+Login API tested successfully
+
+Protected route with token success
+
+Protected route without token failure
+
+Example folder for screenshots:
+
+docs/screenshots/
+🏗️ 2. Architecture Documentation (ARCHITECTURE.md)
+We created a dedicated architecture file:
+
+📌 File Location:
+
+ARCHITECTURE.md
+This file contains:
+
+✅ High-level overview
+✅ Folder structure explanation
+✅ API request flow diagram
+✅ Database + Prisma schema explanation
+✅ Deployment design (AWS/Azure)
+✅ CI/CD workflow overview
+✅ Secrets and environment strategy
+✅ Onboarding steps for contributors
+
+🧾 Architecture Overview
+High Level System Components
+Our application follows a standard modern full-stack architecture:
+
+Components
+Client (Browser) → Next.js frontend UI pages
+
+Backend (API Routes) → Next.js server-side routes under /app/api
+
+Database → PostgreSQL via Prisma ORM
+
+Authentication → JWT tokens
+
+Cloud Storage (Optional) → AWS S3 / Azure Blob
+
+Monitoring → CloudWatch / Azure Monitor
+
+CI/CD → GitHub Actions
+
+🔁 System Data Flow
+Request Flow Example (Protected Route)
+User Browser
+   |
+   | 1. Request /api/users
+   | 2. Sends Authorization: Bearer token
+   v
+Next.js Middleware / API Route
+   |
+   | 3. Verify JWT
+   v
+Prisma ORM
+   |
+   | 4. Query PostgreSQL
+   v
+Database Response
+   |
+   v
+API sends JSON response to client
+📌 Mermaid Architecture Diagram (Add in ARCHITECTURE.md)
+flowchart TD
+    A[Client Browser] -->|Request| B[Next.js API Route]
+    B -->|JWT Verify| C[Middleware/Auth Logic]
+    C -->|Query| D[Prisma ORM]
+    D -->|SQL| E[PostgreSQL DB]
+    E --> D
+    D --> B
+    B --> A
+📂 Directory Structure
+Current recommended structure:
+
+src/
+ ┣ app/
+ ┃   ┣ api/
+ ┃   ┃   ┣ auth/
+ ┃   ┃   ┃   ┣ signup/route.ts
+ ┃   ┃   ┃   ┗ login/route.ts
+ ┃   ┃   ┗ users/route.ts
+ ┃   ┣ page.tsx
+ ┃   ┗ layout.tsx
+ ┣ lib/
+ ┃   ┣ prisma.ts
+ ┃   ┣ jwt.ts
+ ┃   ┗ responseHandler.ts
+ ┣ utils/
+ ┃   ┗ validators.ts
+ ┗ middleware.ts
+🛢️ Database Architecture
+Database Used
+PostgreSQL
+
+ORM Used
+Prisma
+
+Example User Model
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   @default("user")
+  createdAt DateTime @default(now())
+}
+Key Constraints Implemented
+email is unique
+
+id is primary key
+
+password stored in hashed format (bcrypt)
+
+🔐 Environment Variables and Secrets
+Local Environment Files
+We maintain:
+
+.env.local → real secrets (ignored in git)
+
+.env.example → template for contributors
+
+Example .env.example:
+
+DATABASE_URL=postgresql://username:password@localhost:5432/dbname
+JWT_SECRET=your-secret-key
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
+☁️ Deployment Architecture
+Hosting
+Depending on deployment choice:
+
+AWS Option
+ECS / EC2 / Elastic Beanstalk
+
+CloudWatch Logs
+
+RDS PostgreSQL
+
+S3 for uploads
+
+Azure Option
+Azure App Service
+
+Azure Monitor Logs
+
+Azure PostgreSQL
+
+Azure Blob Storage
+
+⚙️ CI/CD Pipeline (GitHub Actions)
+CI pipeline runs:
+
+✅ Install dependencies
+✅ Run lint
+✅ Run tests
+✅ Build Next.js app
+✅ Deploy (optional)
+
+Workflow location:
+
+.github/workflows/ci.yml
+👨‍💻 Contributor Onboarding
+Step 1: Clone Repository
+git clone <repo-url>
+cd frontend
+Step 2: Install Dependencies
+npm install
+Step 3: Setup Environment Variables
+cp .env.example .env.local
+Update values inside .env.local.
+
+Step 4: Run Prisma Migration
+npx prisma migrate dev --name init
+Step 5: Start Server
+npm run dev
+🔄 Documentation Update Checklist
+Whenever a new API is added:
+
+✅ Add endpoint to Postman Collection
+✅ Add request/response examples
+✅ Export collection again into docs/postman_collection.json
+✅ Update API version if breaking changes occur
+✅ Update ARCHITECTURE.md if flow changes
+✅ Add screenshot evidence if required
+
+🔗 Linking Docs in README
+Main README contains:
+
+📌 Postman Collection path
+📌 Architecture file link
+📌 Version info
+📌 Screenshot evidence section
+
+Example:
+
+## Documentation
+- API Docs: `docs/postman_collection.json`
+- Architecture Guide: `ARCHITECTURE.md`
+📸 Screenshots Required (Submission Proof)
+Add screenshots inside:
+
+docs/screenshots/
+Screenshots to capture
+✅ Postman collection overview
+✅ Signup request success
+✅ Login request success
+✅ Protected route success with JWT
+✅ Protected route failure without JWT
+✅ Architecture diagram screenshot
+✅ README links proof
+
+🧠 Reflection
+Why API Documentation Matters
+API documentation helps:
+
+new developers understand endpoints quickly
+
+reduce dependency on team members for API usage
+
+avoid mistakes in request body formatting
+
+standardize authentication and error handling
+
+Without documentation, developers waste time guessing payload formats and response structures.
+
+How Documentation Improves Onboarding
+A new contributor can:
+
+clone the repo
+
+import Postman collection
+
+test endpoints immediately
+
+understand folder structure using ARCHITECTURE.md
+
+This makes onboarding faster and reduces confusion.
+
+Version Consistency Strategy
+We maintain versioning using:
+
+API Version: v1.0.0
+
+version field in Postman collection metadata
+
+update documentation when endpoints change
+
+For future releases:
+
+patch update → v1.0.1 (minor fixes)
+
+minor update → v1.1.0 (new endpoint)
+
+major update → v2.0.0 (breaking changes)
+
+📌 Final Notes
+This documentation ensures the project is production-ready, maintainable, and scalable for future development.
