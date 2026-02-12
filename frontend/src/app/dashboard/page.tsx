@@ -35,7 +35,7 @@ export default async function DashboardPage() {
             {/* Hero Section */}
             <div className="bg-gradient-to-r from-[#18659e] to-[#2a86c9] text-white p-8 md:p-12 mb-8">
                 <div className="max-w-6xl mx-auto">
-                    <h1 className="text-4xl md:text-5xl font-black mb-4 leading-tight">Welcome back,<br />{user.fullName || "Learner"}! 👋</h1>
+                    <h1 className="text-4xl md:text-5xl font-black mb-4 leading-tight">Welcome back,<br />{user.fullName || user.email?.split('@')[0] || "Learner"}! 👋</h1>
                     <p className="text-blue-100 text-lg md:text-xl font-medium max-w-2xl">
                         You're doing great. You've completed 0 courses and have a 1-day streak! Keep going.
                     </p>

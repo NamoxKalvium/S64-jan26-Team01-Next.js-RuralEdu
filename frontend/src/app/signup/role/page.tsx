@@ -11,8 +11,7 @@ export default function RoleSelectionPage() {
         if (selectedRole === "LEARNER") {
             router.push("/signup/dob");
         } else if (selectedRole === "TEACHER") {
-            // Logic for teacher signup can be added here
-            alert("Teacher signup coming soon!");
+            router.push("/signup/details?role=TEACHER");
         }
     };
 
