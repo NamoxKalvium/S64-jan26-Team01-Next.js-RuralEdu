@@ -1,5 +1,5 @@
 import { login } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
+import { prisma, validatePrismaModel } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 
@@ -15,13 +15,27 @@ export async function POST(request: Request) {
             );
         }
 
+        if (validatePrismaModel('user')) {
+            return NextResponse.json(
+                { error: "Database service starting up. Please try again in a few seconds." },
+                { status: 503 }
+            );
+        }
+
         const user = await prisma.user.findUnique({
             where: { email },
         });
 
-        if (!user || !user.password) {
+        if (!user) {
             return NextResponse.json(
-                { error: "Invalid credentials" },
+                { error: "No user found with this email" },
+                { status: 404 }
+            );
+        }
+
+        if (!user.password) {
+            return NextResponse.json(
+                { error: "This account was created via social login. Please use Google to sign in." },
                 { status: 401 }
             );
         }
@@ -30,7 +44,7 @@ export async function POST(request: Request) {
 
         if (!isPasswordValid) {
             return NextResponse.json(
-                { error: "Invalid credentials" },
+                { error: "Incorrect password" },
                 { status: 401 }
             );
         }
@@ -40,10 +54,14 @@ export async function POST(request: Request) {
 
         const { password: _, ...userWithoutPassword } = user;
 
-        return NextResponse.json(userWithoutPassword);
+        return NextResponse.json({
+            ...userWithoutPassword,
+            redirectTo: user.role === "TEACHER" ? "/teacher-dashboard" : "/dashboard"
+        });
     } catch (error) {
+        console.error("Login API Error:", error);
         return NextResponse.json(
-            { error: "Something went wrong" },
+            { error: "Internal Server Error. Please check if the database is running." },
             { status: 500 }
         );
     }

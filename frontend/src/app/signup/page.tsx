@@ -50,13 +50,13 @@ export default function SignupPage() {
                             <span className="text-2xl text-[#18659e] group-hover:translate-x-1 transition-transform">›</span>
                         </Link>
 
-                        <button
-                            onClick={() => alert("Teacher signup coming soon!")}
+                        <Link
+                            href="/signup/details?role=TEACHER"
                             className="flex items-center justify-between w-full p-5 border-2 border-blue-50 bg-[#f0f7ff] rounded-xl hover:border-[#18659e] transition-all group shadow-sm"
                         >
                             <span className="text-lg font-bold text-[#18659e]">I'm a teacher</span>
                             <span className="text-2xl text-[#18659e] group-hover:translate-x-1 transition-transform">›</span>
-                        </button>
+                        </Link>
 
                         <button
                             onClick={() => alert("Parent signup coming soon!")}
