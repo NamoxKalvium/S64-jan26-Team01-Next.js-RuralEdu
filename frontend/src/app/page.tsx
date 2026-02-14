@@ -33,9 +33,9 @@ export default function Home() {
         <section className="max-w-[1200px] mx-auto py-12 px-4 xl:py-24 xl:px-0 flex flex-col xl:flex-row items-center xl:items-start justify-between min-h-[70vh] gap-12">
           <div className="flex-1 flex flex-col items-center xl:items-start">
             <div className="w-full max-w-xl">
-              <h1 className="text-4xl sm:text-5xl font-bold leading-tight mb-4">RuralEdu boosts learning outcomes!</h1>
+              <h1 className="text-4xl sm:text-5xl font-bold leading-tight mb-4">Learning shouldn’t stop when the internet does.</h1>
               <p className="text-lg sm:text-xl text-neutral-700 mb-8">
-                Learn with millions by exploring lessons, tackling practice problems and getting support from trusted educators.
+              Download lessons once. Learn anytime. Practice anywhere. RuralEdu works smoothly even when the connection doesn’t.
               </p>
             </div>
             <div className="relative mt-2">
@@ -63,13 +63,13 @@ export default function Home() {
           </div>
           <aside className="flex-1 flex flex-col items-center xl:items-start pt-4 xl:pt-20">
             <div className="w-full max-w-md xl:mx-0">
-              <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-center xl:text-left">Start learning today by signing up!</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-center xl:text-left">Choose how you want to begin.</h2>
               <div className="flex flex-col gap-4 mb-2">
                 <a href="/login" className="w-full bg-[#eaf3fa] text-[#18659e] text-lg font-semibold rounded-md py-3 px-4 shadow border hover:bg-[#18659e] hover:text-white transition text-center">
                   I'm a learner
                 </a>
                 <a href="/login" className="w-full bg-[#eaf3fa] text-[#18659e] text-lg font-semibold rounded-md py-3 px-4 shadow border hover:bg-[#18659e] hover:text-white transition text-center">
-                  I'm a teacher
+                I’m an Educator
                 </a>
               </div>
               <a className="text-[#18659e] underline text-sm font-medium hover:text-[#153b52] block mt-3 text-center xl:text-left" href="/login">
@@ -80,13 +80,13 @@ export default function Home() {
         </section>
         <section className="bg-[#f9fafb] border-t border-neutral-200">
           <div className="max-w-5xl mx-auto px-4 py-16 text-center">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-10">Why RuralEdu works</h2>
+            <h2 className="text-3xl sm:text-4xl font-bold mb-10">Built for real classrooms. Designed for real challenges.</h2>
             <div className="grid gap-10 md:grid-cols-3 text-left">
               <div className="flex flex-col items-center md:items-start">
                 <Image src="/personalized.png" alt="Personalized learning" width={96} height={96} className="mb-4" />
                 <h3 className="text-xl font-semibold mb-2">Personalized learning</h3>
                 <p className="text-sm text-neutral-700 leading-relaxed">
-                  Learners practice at their own pace, filling gaps first and then moving ahead when they are ready, even when the connection is patchy.
+                Learn at your own pace Students can study ahead, revise anytime, and continue learning even when the network is slow or unavailable.
                 </p>
               </div>
               <div className="flex flex-col items-center md:items-start">
@@ -144,7 +144,7 @@ export default function Home() {
                 href="/signup/teacher"
                 className="inline-block px-6 py-2 rounded-md bg-[#18659e] text-white text-sm font-semibold hover:bg-[#153b52] transition"
               >
-                Teachers, start here
+                Educators, start here
               </a>
             </div>
           </div>
@@ -160,11 +160,10 @@ export default function Home() {
               </p>
               <h2 className="text-3xl sm:text-4xl font-semibold leading-snug mb-4">
                 <span className="bg-[#ccead9] px-1 mr-1">You</span>
-                can learn anything.
+                can keep learning — anytime.
               </h2>
               <p className="text-sm text-neutral-700 mb-6 max-w-md">
-                Build a deep, solid understanding in maths, science and more with lessons
-                that keep working even when the internet drops.
+              Build strong foundations in math, science, and more — even when the internet drops. Download once and keep learning offline.
               </p>
               <a
                 href="/signup/learner"
