@@ -1,8 +1,18 @@
 // IndexedDB utility for offline course storage
 const DB_NAME = "RuralEduDB";
-const DB_VERSION = 1;
+const DB_VERSION = 2; // Incremented version to trigger upgrade for announcements
 const STORE_COURSES = "courses";
 const STORE_LESSONS = "lessons";
+const STORE_ANNOUNCEMENTS = "announcements";
+
+export interface AnnouncementData {
+  id: string;
+  title: string;
+  content: string;
+  createdAt: string;
+  teacher?: { fullName: string | null };
+  class?: { name: string };
+}
 
 export interface CourseData {
   id: string;
@@ -50,7 +60,46 @@ export async function initDB(): Promise<IDBDatabase> {
         });
         lessonStore.createIndex("courseId", "courseId", { unique: false });
       }
+
+      // Create announcements store
+      if (!database.objectStoreNames.contains(STORE_ANNOUNCEMENTS)) {
+        database.createObjectStore(STORE_ANNOUNCEMENTS, {
+          keyPath: "id",
+        });
+      }
     };
+  });
+}
+
+export async function saveAnnouncements(announcements: AnnouncementData[]): Promise<void> {
+  const database = await initDB();
+  return new Promise((resolve, reject) => {
+    const transaction = database.transaction([STORE_ANNOUNCEMENTS], "readwrite");
+    const store = transaction.objectStore(STORE_ANNOUNCEMENTS);
+
+    // Clear old announcements and save new ones
+    store.clear();
+    announcements.forEach((a) => store.put(a));
+
+    transaction.oncomplete = () => resolve();
+    transaction.onerror = () => reject(transaction.error);
+  });
+}
+
+export async function getAllAnnouncements(): Promise<AnnouncementData[]> {
+  const database = await initDB();
+  return new Promise((resolve, reject) => {
+    const transaction = database.transaction([STORE_ANNOUNCEMENTS], "readonly");
+    const store = transaction.objectStore(STORE_ANNOUNCEMENTS);
+    const request = store.getAll();
+
+    request.onsuccess = () => {
+      const data = request.result || [];
+      // Sort by date descending
+      data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      resolve(data);
+    };
+    request.onerror = () => reject(request.error);
   });
 }
 

@@ -11,7 +11,6 @@ const SignupDetailsContent = dynamic(() => import("@/components/auth/SignupDetai
         </div>
     )
 });
-
 export default function DetailsPage() {
     return (
         <Suspense fallback={

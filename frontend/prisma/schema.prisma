@@ -16,4 +16,100 @@ model User {
   dateOfBirth DateTime?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  // Relations for Student
+  classId     String?
+  class       Class?   @relation(fields: [classId], references: [id])
+  results       Result[] @relation("StudentResults")
+  progress      LessonProgress[]
+
+  // Relations for Teacher
+  lessons       Lesson[]
+  quizzes       Quiz[]
+  announcements Announcement[]
+}
+
+model Class {
+  id            String         @id @default(uuid())
+  name          String
+  students      User[]
+  announcements Announcement[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model Lesson {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  content     String   // DB TEXT equivalent
+  teacherId   String
+  teacher     User     @relation(fields: [teacherId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  quizzes     Quiz[]
+  progress    LessonProgress[]
+}
+
+model Quiz {
+  id          String     @id @default(uuid())
+  title       String
+  lessonId    String?
+  lesson      Lesson?    @relation(fields: [lessonId], references: [id])
+  teacherId   String
+  teacher     User       @relation(fields: [teacherId], references: [id])
+  questions   Question[]
+  results     Result[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Question {
+  id            String   @id @default(uuid())
+  quizId        String
+  quiz          Quiz     @relation(fields: [quizId], references: [id])
+  text          String
+  options       Option[]
+  correctOptionId String? // ID of the correct option
+}
+
+model Option {
+  id         String   @id @default(uuid())
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id])
+  text       String
+}
+
+model Announcement {
+  id        String   @id @default(uuid())
+  title     String
+  content   String
+  teacherId String
+  teacher   User     @relation(fields: [teacherId], references: [id])
+  classId   String?
+  class     Class?   @relation(fields: [classId], references: [id])
+  createdAt DateTime @default(now())
+  expiresAt DateTime?
+}
+
+model Result {
+  id        String   @id @default(uuid())
+  studentId String
+  student   User     @relation("StudentResults", fields: [studentId], references: [id])
+  quizId    String
+  quiz      Quiz     @relation(fields: [quizId], references: [id])
+  score     Int
+  completedAt DateTime @default(now())
+}
+
+model LessonProgress {
+  id        String   @id @default(uuid())
+  studentId String
+  student   User     @relation(fields: [studentId], references: [id])
+  lessonId  String
+  lesson    Lesson   @relation(fields: [lessonId], references: [id])
+  completed Boolean  @default(false)
+  updatedAt DateTime @updatedAt
+
+  @@unique([studentId, lessonId])
 }

@@ -158,6 +158,19 @@ export default function CoursePage() {
     }
   }, [courseId, router]);
 
+  useEffect(() => {
+    if (course && course.lessons[currentLessonIndex]) {
+      const activeData = {
+        courseId,
+        courseTitle: course.title,
+        lessonIndex: currentLessonIndex,
+        lessonTitle: course.lessons[currentLessonIndex].title,
+        timestamp: Date.now()
+      };
+      localStorage.setItem("ruraledu-last-active", JSON.stringify(activeData));
+    }
+  }, [course, currentLessonIndex, courseId]);
+
   const handleNextLesson = () => {
     if (course && currentLessonIndex < course.lessons.length - 1) {
       setCurrentLessonIndex(currentLessonIndex + 1);
@@ -197,7 +210,7 @@ export default function CoursePage() {
     // Save progress
     const stored = localStorage.getItem(`ruraledu-course-${courseId}`);
     const progress = stored ? JSON.parse(stored) : { lessons: [], currentLessonIndex: 0 };
-    
+
     if (passed) {
       progress.lessons[currentLessonIndex] = { completed: true };
       localStorage.setItem(`ruraledu-course-${courseId}`, JSON.stringify(progress));
@@ -215,6 +228,35 @@ export default function CoursePage() {
         (completedLessons / course.lessons.length) * 100
       );
       localStorage.setItem("ruraledu-progress", JSON.stringify(data));
+    }
+
+    // Track daily quiz completions for Daily Goal widget
+    if (passed) {
+      const today = new Date().toDateString();
+      const quizData = localStorage.getItem("ruraledu-daily-quizzes");
+      let dailyQuizzes = { date: today, count: 0 };
+      if (quizData) {
+        const parsed = JSON.parse(quizData);
+        if (parsed.date === today) {
+          dailyQuizzes = parsed;
+        }
+      }
+      dailyQuizzes.count += 1;
+      dailyQuizzes.date = today;
+      localStorage.setItem("ruraledu-daily-quizzes", JSON.stringify(dailyQuizzes));
+
+      // Track study time (approximate: 5 min per quiz)
+      const timeData = localStorage.getItem("ruraledu-study-time");
+      let studyTime = { date: today, minutes: 0 };
+      if (timeData) {
+        const parsed = JSON.parse(timeData);
+        if (parsed.date === today) {
+          studyTime = parsed;
+        }
+      }
+      studyTime.minutes += 5;
+      studyTime.date = today;
+      localStorage.setItem("ruraledu-study-time", JSON.stringify(studyTime));
     }
   };
 
@@ -304,9 +346,8 @@ export default function CoursePage() {
           /* Quiz Results */
           <div className="text-center space-y-6">
             <div
-              className={`inline-flex items-center justify-center w-24 h-24 rounded-full ${
-                quizResults.passed ? "bg-green-100" : "bg-red-100"
-              }`}
+              className={`inline-flex items-center justify-center w-24 h-24 rounded-full ${quizResults.passed ? "bg-green-100" : "bg-red-100"
+                }`}
             >
               <span className="text-4xl">
                 {quizResults.passed ? "✓" : "✗"}
@@ -370,11 +411,10 @@ export default function CoursePage() {
                     {question.options.map((option, oIndex) => (
                       <label
                         key={oIndex}
-                        className={`flex items-center p-3 border rounded cursor-pointer transition ${
-                          quizAnswers[qIndex] === oIndex
-                            ? "border-[#18659e] bg-blue-50"
-                            : "border-gray-200 hover:border-gray-300"
-                        }`}
+                        className={`flex items-center p-3 border rounded cursor-pointer transition ${quizAnswers[qIndex] === oIndex
+                          ? "border-[#18659e] bg-blue-50"
+                          : "border-gray-200 hover:border-gray-300"
+                          }`}
                       >
                         <input
                           type="radio"
@@ -389,11 +429,10 @@ export default function CoursePage() {
                   </div>
                   {quizResults?.showResults && (
                     <div
-                      className={`mt-4 p-3 rounded ${
-                        quizAnswers[qIndex] === question.correctAnswer
-                          ? "bg-green-50 border border-green-200"
-                          : "bg-red-50 border border-red-200"
-                      }`}
+                      className={`mt-4 p-3 rounded ${quizAnswers[qIndex] === question.correctAnswer
+                        ? "bg-green-50 border border-green-200"
+                        : "bg-red-50 border border-red-200"
+                        }`}
                     >
                       <p className="text-sm font-medium mb-1">
                         {quizAnswers[qIndex] === question.correctAnswer

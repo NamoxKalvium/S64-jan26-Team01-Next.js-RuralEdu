@@ -39,7 +39,7 @@ export default function LearnerDetailsPage() {
             }
 
             // Success, redirect to dashboard
-            router.push('/dashboard');
+            router.push('/student/dashboard');
         } catch (err: any) {
             setError(err.message);
         } finally {
