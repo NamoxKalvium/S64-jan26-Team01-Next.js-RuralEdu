@@ -28,7 +28,7 @@ export async function createLesson(formData: FormData) {
             },
         });
 
-        revalidatePath("/teacher-dashboard/lessons");
+        revalidatePath("/teacher/dashboard/lessons");
         return { success: true };
     } catch (error) {
         console.error("Failed to create lesson:", error);

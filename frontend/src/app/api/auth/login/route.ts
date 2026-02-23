@@ -56,7 +56,7 @@ export async function POST(request: Request) {
 
         return NextResponse.json({
             ...userWithoutPassword,
-            redirectTo: user.role === "TEACHER" ? "/teacher-dashboard" : "/dashboard"
+            redirectTo: user.role === "TEACHER" ? "/teacher/dashboard" : "/dashboard"
         });
     } catch (error) {
         console.error("Login API Error:", error);
